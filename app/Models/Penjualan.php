@@ -10,9 +10,9 @@ class Penjualan extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected $fillable = ['id_anggota', 'no_transaksi'];
-    public function user()
+    protected $fillable = ['id_user', 'kode_transaksi', 'tanggal_transaksi'];
+    public function barang()
     {
-        return $this->belongsTo(User::class, 'id_level', 'id');
+        return $this->belongsTo(Barang::class, 'id_barang',  'id');
     }
 }

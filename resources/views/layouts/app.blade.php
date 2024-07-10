@@ -1,3 +1,7 @@
+<?php
+use App\Models\Barang;
+$barang = Barang::get();
+?>
 <!DOCTYPE html>
 <html lang="en">
 

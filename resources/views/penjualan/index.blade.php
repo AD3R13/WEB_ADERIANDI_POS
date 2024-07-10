@@ -6,14 +6,17 @@
         <div class="card-body">
             <div class="chart-container" style="min-height: 100px">
                 <div class="form-group mb-3">
-                    <a href="{{ route('penjualan.create') }}" class="btn btn-success btn-round"><i class="fas fa-plus"></i>
-                        Add</a>
+                    @if (Auth::check() && Auth::user()->id_level == 1)
+                        <a href="{{ route('penjualan.create') }}" class="btn btn-success btn-round"><i class="fas fa-plus"></i>
+                            Add</a>
+                    @endif
                 </div>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Member Name</th>
+                            <th>Cashier Name</th>
+                            <th>Transaksi pada</th>
                             <th>No Transaction</th>
                             <th>Action</th>
                         </tr>
@@ -22,8 +25,9 @@
                         @foreach ($users as $user)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $user->anggota->nama_anggota }}</td>
-                                <td>{{ $user->no_transaksi }}</td>
+                                <td>{{ $user->user->nama_lengkap }}</td>
+                                <td>{{ $user->tanggal_transaksi }}</td>
+                                <td>{{ $user->kode_transaksi }}</td>
                                 <td>
                                     <a href="{{ route('peminjam.edit', $user->id) }}" class="btn btn-xs bg-primary">
                                         <i class="fas fa-edit"> Edit</i>

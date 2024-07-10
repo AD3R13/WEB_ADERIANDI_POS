@@ -99,21 +99,15 @@
                         </div>
                     </li>
                 @endif
-                @if ((Auth::check() && Auth::user()->id_level == 2) || (Auth::check() && Auth::user()->id_level == 3))
+                @if (Auth::check() && Auth::user()->id_level == 2)
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#sidebarLayouts">
                             <i class="fas fa-database"></i>
-                            <p>Base Transaction</p>
+                            <p>Stock Barang</p>
                             <span class="caret"></span>
                         </a>
                         <div class="collapse" id="sidebarLayouts">
                             <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="{{ route('penjualan.index') }}">
-                                        <i class="fas fa-money-check-alt"></i>
-                                        <span>Data Transaction</span>
-                                    </a>
-                                </li>
                                 <li>
                                     <a href="{{ route('barang.index') }}">
                                         <i class="fa fa-book"></i>
@@ -132,13 +126,44 @@
                         <div class="collapse" id="forms">
                             <ul class="nav nav-collapse">
                                 <li>
-                                    <a href="forms/forms.html">
+                                    <a href="{{ route('penjualan.index') }}">
                                         <i class="far fa-clock"></i>
                                         <span>Sales History</span>
                                     </a>
                                 </li>
                             </ul>
                         </div>
+                @endif
+                @if (Auth::check() && Auth::user()->id_level == 3)
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#sidebarLayouts">
+                            <i class="fas fa-database"></i>
+                            <p>Base Transaction</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="sidebarLayouts">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="{{ route('penjualan.create') }}">
+                                        <i class="fas fa-money-check-alt"></i>
+                                        <span>Transaction</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('barang.index') }}">
+                                        <i class="fa fa-book"></i>
+                                        <span>Data Barang</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('penjualan.index') }}">
+                                        <i class="far fa-clock"></i>
+                                        <span>Sales History</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                 @endif
                 </li>
             </ul>

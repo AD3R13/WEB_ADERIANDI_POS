@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Buku;
+use App\Models\User;
+use App\Models\Barang;
 use App\Models\Anggota;
 use App\Models\Penjualan;
-use App\Models\DetailPenjualan;
 use Illuminate\Http\Request;
+use App\Models\DetailPenjualan;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use PHPUnit\TextUI\Configuration\Php;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -40,24 +40,31 @@ class PenjualanController extends Controller
         $urutan++;
         date_default_timezone_set("Asia/Jakarta");
         $kode_transaksi = $huruf . date('-dmY-H:i-') . sprintf('%03s', $urutan);
+        $kodes = date('d-m-Y');
+        $nama_hari = date('l', strtotime($kodes));
         $data = User::orderBy('id', 'desc')->get();
+        $barang = Barang::all();
 
-        return view('penjualan.create', compact('data', 'kode_transaksi'));
+        return view('penjualan.create', compact('data', 'kode_transaksi', 'kodes', 'nama_hari', 'barang'));
     }
     public function store(Request $request)
     {
         if ($request->id_buku) {
             $Penjualan = Penjualan::create([
-                'id_anggota' => $request->id_anggota,
-                'no_transaksi' => $request->no_transaksi,
+                'id_user' => $request->id_user,
+                'kode_transaksi' => $request->kode_transaksi,
+                'tanggal_transaksi' => $request->tanggal_transaksi,
             ]);
-            foreach ($request->id_buku as $index => $id_buku) {
+            foreach ($request->id_barang as $index => $id_barang) {
                 DetailPenjualan::create([
-                    'id_Penjualan' => $Penjualan->id,
-                    'id_buku' => $id_buku,
-                    'tanggal_pinjam' => $request->tanggal_pinjam[$index],
-                    'tanggal_kembali' => $request->tanggal_kembali[$index],
-                    'keterangan' => $request->keterangan,
+                    'id_penjualan' => $Penjualan->id,
+                    'id_barang' => $id_barang,
+                    'harga' => $request->harga[$index],
+                    'qty' => $request->qty[$index],
+                    'total_harga' => $request->total_harga[$index],
+                    'nominal_bayar' => $request->nominal_bayar[$index],
+                    'kembalian' => $request->kembalian,
+                    'jumlah' => $request->jumlah,
                 ]);
             };
             Alert::success('Added borrower data', 'Success Message!');

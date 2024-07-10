@@ -45,6 +45,70 @@
 <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<script>
+    $('.btn-add').click(function() {
+        let tbody = $('tbody');
+        let newTr = "<tr>";
+        newTr += "<td>";
+        newTr += "<select name='id_barang[]' class='form-control' required>";
+        newTr += "<option value='' selected hidden>Select barang</option>";
+        @foreach ($barang as $item)
+            newTr += "<option value='{{ $item->id }}'>{{ $item->nama_barang }}</option>";
+        @endforeach
+        newTr += "</select>";
+        newTr += "</td>";
+        newTr += "<td><input type='number' name='qty[]' class='form-control'></td>";
+        newTr += "<td><input type='number' name='harga[]' class='form-control' readonly></td>";
+        newTr += "<td><input type='number' name='total_harga[]' class='form-control' readonly></td>";
+        newTr +=
+            "<td><button type='button' class='btn btn-danger remove-row btn-round'><i class='fas fa-trash-alt'></i> Delete</button></td>";
+        newTr += "</tr>";
+        tbody.append(newTr);
+    tbody.appendChild(newTr);
+    });
+
+    document.querySelector('tbody').addEventListener('change', function(event) {
+      if (event.target.classList.contains('select-barang')) {
+        let selectedBarang = barangData.find(item => item.id == event.target.value);
+        let tr = event.target.closest('tr');
+        tr.querySelector('.harga-input').value = selectedBarang.harga;
+        tr.querySelector('.qty-input').value = 1;
+        tr.querySelector('.total-harga-input').value = selectedBarang.harga;
+        calculateTotalHarga();
+      } else if (event.target.classList.contains('qty-input')) {
+        let tr = event.target.closest('tr');
+        let harga = tr.querySelector('.harga-input').value;
+        let qty = event.target.value;
+        tr.querySelector('.total-harga-input').value = harga * qty;
+        calculateTotalHarga();
+      }
+    });
+
+    document.querySelector('tbody').addEventListener('click', function(event) {
+      if (event.target.classList.contains('remove-row')) {
+        event.target.closest('tr').remove();
+        calculateTotalHarga();
+      }
+    });
+
+    document.querySelector('#hitung-kembalian').addEventListener('click', function() {
+      let totalHarga = parseInt(document.querySelector('#total-harga').innerText);
+      let nominalBayar = parseInt(document.querySelector('#nominal_bayar').value);
+      let kembalian = nominalBayar - totalHarga;
+      document.querySelector('#kembalian').innerText = kembalian;
+      document.querySelector('#hidden_kembalian').value = kembalian;
+
+    });
+
+    function calculateTotalHarga() {
+      let totalHarga = 0;
+      document.querySelectorAll('.total-harga-input').forEach(input => {
+        totalHarga += parseInt(input.value);
+      });
+      document.querySelector('#total-harga').innerText = totalHarga;
+      // document.querySelector('#total-harga').value = totalHarga;
+    }
+</script>
 
 <script>
     $(document).ready(function() {

@@ -7,20 +7,16 @@
                 <form class="justify-content-center" action="{{ route('penjualan.store') }}" method="POST">
                     @csrf
                     <div class="form-group mb-3">
-                        <label for="">Member name</label>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <select id="id_anggota" class="form-control" name="id_anggota" required>
-                                    <option value="" hidden>Choose a member</option>
-                                    @foreach ($data as $d)
-                                        <option value="{{ $d->id }}">{{ $d->nama_lengkap }}</option>
-                                    @endforeach
-                                </select>
+                        <label for="">Cashier name</label>
+                        <div>
+                            <div align="left" class="col-md-2">
+                                <input type="text" readonly value="{{ $nama_hari }}, {{ $kodes }}"
+                                    class="form-control form-control-sm" name="no_transaksi" style="padding-right: 5px;">
                             </div>
-                            <div align="left" class="col-md-3">
-                                <a href="{{ route('pengguna.create') }}" type="button"
-                                    class="btn btn-success btn-sm btn-round"><b><i class="fas fa-plus">
-                                            New Member</i></b></a>
+                            <br>
+                            <div class="col-md-3">
+                                <input type="text" readonly value="{{ Auth::user()->nama_lengkap }}" class="form-control"
+                                    name="no_transaksi">
                             </div>
                         </div>
                     </div>
@@ -40,10 +36,10 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>Book Name</th>
-                                        <th>Loan of Date</th>
-                                        <th>Loan of Return</th>
-                                        <th>Keterangan</th>
+                                        <th>Nama Barang</th>
+                                        <th>Quantity</th>
+                                        <th>Harga</th>
+                                        <th>Total Harga</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
