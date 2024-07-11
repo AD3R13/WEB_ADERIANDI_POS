@@ -9,10 +9,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Penjualan extends Model
 {
     use HasFactory;
-    use SoftDeletes;
-    protected $fillable = ['id_user', 'kode_transaksi', 'tanggal_transaksi'];
+    protected $fillable = ['id_user', 'kode_transaksi', 'tanggal_transaksi', 'nominal_bayar', 'kembalian'];
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user', 'id');
+    }
     public function barang()
     {
-        return $this->belongsTo(Barang::class, 'id_barang',  'id');
+        return $this->belongsTo(Barang::class, 'id_user',  'id');
     }
 }

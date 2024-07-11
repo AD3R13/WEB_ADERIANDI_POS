@@ -4,8 +4,6 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-use function Laravel\Prompts\text;
-
 return new class extends Migration
 {
     /**
@@ -13,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bukus', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('nama_buku');
-            $table->string('penerbit');
-            $table->integer('qty');
-            $table->text('deskripsi')->nullable();
-            $table->string('penulis');
-            $table->string('genre');
+        Schema::create('detail_penjualans', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('id_penjualan')->constrained('penjualans');
+            $table->foreignId('id_barang')->constrained('barangs');
+            $table->integer('jumlah');
+            $table->integer('harga');
+            $table->integer('total_harga');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bukus');
+        Schema::dropIfExists('detail_penjualans');
     }
 };

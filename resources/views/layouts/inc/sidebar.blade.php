@@ -81,23 +81,6 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#sidebarLayouts">
-                            <i class="fas fa-database"></i>
-                            <p>Base Transaction</p>
-                            <span class="caret"></span>
-                        </a>
-                        <div class="collapse" id="sidebarLayouts">
-                            <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="{{ route('penjualan.index') }}">
-                                        <i class="fas fa-money-check-alt"></i>
-                                        <span>Data Transaction</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
                 @endif
                 @if (Auth::check() && Auth::user()->id_level == 2)
                     <li class="nav-item">

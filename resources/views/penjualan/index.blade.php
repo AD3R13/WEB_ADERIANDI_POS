@@ -26,13 +26,13 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $user->user->nama_lengkap }}</td>
-                                <td>{{ $user->tanggal_transaksi }}</td>
+                                <td>{{ date('l, d M Y', strtotime($user->tanggal_transaksi)) }}</td>
                                 <td>{{ $user->kode_transaksi }}</td>
                                 <td>
-                                    <a href="{{ route('peminjam.edit', $user->id) }}" class="btn btn-xs bg-primary">
+                                    <a href="{{ route('penjualan.edit', $user->id) }}" class="btn btn-xs bg-primary">
                                         <i class="fas fa-edit"> Edit</i>
                                     </a>
-                                    <form action="{{ route('peminjam.destroy', $user->id) }}" method="POST"
+                                    <form action="{{ route('penjualan.destroy', $user->id) }}" method="POST"
                                         class="d-inline">
                                         @csrf
                                         <input type="hidden" name="_method" value="DELETE">

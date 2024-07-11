@@ -46,67 +46,64 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    $('.btn-add').click(function() {
-        let tbody = $('tbody');
-        let newTr = "<tr>";
-        newTr += "<td>";
-        newTr += "<select name='id_barang[]' class='form-control' required>";
-        newTr += "<option value='' selected hidden>Select barang</option>";
-        @foreach ($barang as $item)
-            newTr += "<option value='{{ $item->id }}'>{{ $item->nama_barang }}</option>";
-        @endforeach
-        newTr += "</select>";
-        newTr += "</td>";
-        newTr += "<td><input type='number' name='qty[]' class='form-control'></td>";
-        newTr += "<td><input type='number' name='harga[]' class='form-control' readonly></td>";
-        newTr += "<td><input type='number' name='total_harga[]' class='form-control' readonly></td>";
-        newTr +=
-            "<td><button type='button' class='btn btn-danger remove-row btn-round'><i class='fas fa-trash-alt'></i> Delete</button></td>";
-        newTr += "</tr>";
-        tbody.append(newTr);
-    tbody.appendChild(newTr);
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('.btn-add').addEventListener('click', function() {
+            const tbody = document.querySelector('table tbody');
+            const tr = document.createElement('tr');
+
+            tr.innerHTML = `
+                <td>
+                    <select name='id_barang[]' class='form-control select-barang'>
+                        <option value='' hidden>Select Barang</option>
+                        @foreach ($barang as $item)
+                            <option value='{{ $item->id }}'>{{ $item->nama_barang }}</option>
+                        @endforeach
+                    </select>
+                </td>
+                <td><input type="number" class="form-control jumlah" name="jumlah[]" oninput="calculateTotal()"></td>
+                <td><input type="number" class="form-control harga" name="harga[]" oninput="calculateTotal()"></td>
+                <td><input type="text" class="form-control total-harga" name="total_harga[]" readonly></td>
+                <td><button type="button" class="btn btn-danger btn-sm btn-remove"><i class="fas fa-trash-alt"> Remove</i></button></td>
+            `;
+
+            tbody.appendChild(tr);
+
+            tr.querySelector('.btn-remove').addEventListener('click', function() {
+                tr.remove();
+                calculateTotal();
+            });
+        });
     });
 
-    document.querySelector('tbody').addEventListener('change', function(event) {
-      if (event.target.classList.contains('select-barang')) {
-        let selectedBarang = barangData.find(item => item.id == event.target.value);
-        let tr = event.target.closest('tr');
-        tr.querySelector('.harga-input').value = selectedBarang.harga;
-        tr.querySelector('.qty-input').value = 1;
-        tr.querySelector('.total-harga-input').value = selectedBarang.harga;
-        calculateTotalHarga();
-      } else if (event.target.classList.contains('qty-input')) {
-        let tr = event.target.closest('tr');
-        let harga = tr.querySelector('.harga-input').value;
-        let qty = event.target.value;
-        tr.querySelector('.total-harga-input').value = harga * qty;
-        calculateTotalHarga();
-      }
-    });
+    function calculateTotal() {
+        const rows = document.querySelectorAll('table tbody tr');
+        let total = 0;
 
-    document.querySelector('tbody').addEventListener('click', function(event) {
-      if (event.target.classList.contains('remove-row')) {
-        event.target.closest('tr').remove();
-        calculateTotalHarga();
-      }
-    });
+        rows.forEach(row => {
+            const jumlah = row.querySelector('.jumlah').value;
+            const harga = row.querySelector('.harga').value;
+            const totalHarga = row.querySelector('.total-harga');
 
-    document.querySelector('#hitung-kembalian').addEventListener('click', function() {
-      let totalHarga = parseInt(document.querySelector('#total-harga').innerText);
-      let nominalBayar = parseInt(document.querySelector('#nominal_bayar').value);
-      let kembalian = nominalBayar - totalHarga;
-      document.querySelector('#kembalian').innerText = kembalian;
-      document.querySelector('#hidden_kembalian').value = kembalian;
+            const subtotal = jumlah * harga;
+            totalHarga.value = subtotal;
+            total += subtotal;
+        });
 
-    });
+        document.getElementById('total').value = total;
+        calculateChange();
+    }
 
-    function calculateTotalHarga() {
-      let totalHarga = 0;
-      document.querySelectorAll('.total-harga-input').forEach(input => {
-        totalHarga += parseInt(input.value);
-      });
-      document.querySelector('#total-harga').innerText = totalHarga;
-      // document.querySelector('#total-harga').value = totalHarga;
+    function calculateChange() {
+        const total = parseFloat(document.getElementById('total').value);
+        const bayar = parseFloat(document.getElementById('bayar').value);
+        const kembalian = bayar - total;
+
+        document.getElementById('kembalian').value = kembalian;
+    }
+
+    function setHiddenValues() {
+        document.getElementById('hidden_nominal_bayar').value = document.getElementById('bayar').value;
+        document.getElementById('hidden_kembalian').value = document.getElementById('kembalian').value;
     }
 </script>
 

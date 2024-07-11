@@ -35,7 +35,7 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
 Route::middleware(['auth', 'administrator'])->group(function () {
     Route::resource('pengguna', PenggunaController::class);
     Route::resource('level', LevelController::class);
-    Route::resource('category', KategoriController::class);
 });
-Route::resource('barang', BarangController::class);
+Route::resource('category', KategoriController::class);
 Route::resource('penjualan', PenjualanController::class);
+Route::resource('barang', BarangController::class);
